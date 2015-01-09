@@ -6,9 +6,9 @@ from requests.exceptions import ConnectionError
 
 CGROUP_DIR = "/sys/fs/cgroup/memory/docker/"
 CGROUP_FILES = {
-    "memory.usage_in_bytes":"Usage In Bytes: ",
-    "memory.max_usage_in_bytes":"Max Usage In Bytes: ",
-    "memory.limit_in_bytes": "Limit In Bytes: ",
+    "memory.usage_in_bytes":"Usage In Bytes",
+    "memory.max_usage_in_bytes":"Max Usage In Bytes",
+    "memory.limit_in_bytes": "Limit In Bytes",
 }
 
 def print_info(args, container_id):
@@ -18,13 +18,16 @@ def print_info(args, container_id):
     else:
         print_many(args, container_dir)
 
-def print_by_name(container_dir, cgroup_name):
+def print_by_name(container_dir, cgroup_name, message=None):
     file_name = os.path.join(container_dir, cgroup_name)
     if os.path.isfile(file_name):
-        file = open(file_name, 'r')
-        contents = file.read()
-        file.close()
-        print "%s: %s" % (cgroup_name, contents.replace("\n", "\t").strip())
+        try:
+            file = open(file_name, 'r')
+            contents = file.read()
+            file.close()
+            print "%s: %s" % (cgroup_name if not message else message, contents.replace("\n", "\t").strip())
+        except IOError as e:
+            print "Could not open the cgroup file %s because of error %s" % (file_name, e)
     else:
         print "%s is not a file in the docker cgroup."
 
@@ -38,16 +41,13 @@ def print_many(args, container_dir):
                 print file
     else:
         for cgroup_file, message in CGROUP_FILES.items():
-            file = open(os.path.join(container_dir, cgroup_file), 'r')
-            contents = file.read()
-            file.close()
-            print message, contents.replace("\n", "\t").strip()
+            print_by_name(container_dir, cgroup_file, message)
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser(description='Grab information about your docker containers.')
     parser.add_argument('--cgroup_name', help='Specify a particular information file you want to display')
-    parser.add_argument('--verbose', type=bool, help='Print all information available about a docker', default=False)
-    parser.add_argument('--list', '-l', type=bool, help='Only list all available cgroup options', default=False)
+    parser.add_argument('--verbose', action='store_true', help='Print all information available about a docker')
+    parser.add_argument('--list', '-l', action='store_true', help='Only list all available cgroup options')
     parser.add_argument('--url', '-u', help='Specify how to connect to your docker', default='unix://var/run/docker.sock')
     args = parser.parse_args()
 
