@@ -45,7 +45,7 @@ if __name__=="__main__":
     parser = argparse.ArgumentParser(description='Grab information about your docker containers.')
     parser.add_argument('--cgroup_name', help='Specify a particular information file you want to display')
     parser.add_argument('--verbose', type=bool, help='Print all information available about a docker', default=False)
-    parser.add_argument('-u', '--url', help='Print all information available about a docker', default='unix://var/run/docker.sock')
+    parser.add_argument('-u', '--url', help='Specify how to connect to your docker', default='unix://var/run/docker.sock')
     args = parser.parse_args()
 
     try:
