@@ -29,10 +29,13 @@ def print_by_name(container_dir, cgroup_name):
         print "%s is not a file in the docker cgroup."
 
 def print_many(args, container_dir):
-    if args.verbose:
+    if args.verbose or args.list:
         files = os.listdir(container_dir)
         for file in files:
-            print_by_name(container_dir, file)
+            if not args.list:
+                print_by_name(container_dir, file)
+            else:
+                print file
     else:
         for cgroup_file, message in CGROUP_FILES.items():
             file = open(os.path.join(container_dir, cgroup_file), 'r')
@@ -44,7 +47,8 @@ if __name__=="__main__":
     parser = argparse.ArgumentParser(description='Grab information about your docker containers.')
     parser.add_argument('--cgroup_name', help='Specify a particular information file you want to display')
     parser.add_argument('--verbose', type=bool, help='Print all information available about a docker', default=False)
-    parser.add_argument('-u', '--url', help='Specify how to connect to your docker', default='unix://var/run/docker.sock')
+    parser.add_argument('--list', '-l', type=bool, help='Only list all available cgroup options', default=False)
+    parser.add_argument('--url', '-u', help='Specify how to connect to your docker', default='unix://var/run/docker.sock')
     args = parser.parse_args()
 
     try:
