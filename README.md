@@ -1,6 +1,19 @@
 # Docker cgroup info
 ## A minimal tool for inspecting docker containers
 
+## Usage
+```
+usage: docker_info.py [-h] [--cgroup_name CGROUP_NAME] [--verbose VERBOSE]
+                      [--list LIST] [--url URL]
+```
+
+## General install
+```
+virtualenv env
+. env/bin/activate
+pip install -r requirements
+```
+
 ## Boot2docker install
 ```
 boot2docker ssh
