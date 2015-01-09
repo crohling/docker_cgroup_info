@@ -8,7 +8,6 @@ CGROUP_FILES = {
     "memory.usage_in_bytes":"Usage In Bytes: ",
     "memory.max_usage_in_bytes":"Max Usage In Bytes: ",
     "memory.limit_in_bytes": "Limit In Bytes: ",
-    "memory.numa_stat": "Numa Stat: ",
 }
 
 def print_info(args, container_id):
