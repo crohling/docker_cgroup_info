@@ -23,5 +23,5 @@ curl -LO https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py && sudo
 sudo easy_install pip
 cd docker_cgroup_info
 sudo pip install -r requirements.txt
-./docker_cgroup_info
+./docker_info.py
 ```
