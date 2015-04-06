@@ -1,4 +1,7 @@
 # Docker cgroup info
+
+[Docker Stats](https://docs.docker.com/reference/commandline/cli/#stats) deprecates this.
+
 ## A minimal tool for inspecting docker containers
 
 ## Usage
